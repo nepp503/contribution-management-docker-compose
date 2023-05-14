@@ -1,0 +1,38 @@
+version: "2.3"
+
+networks:
+  contrib-network:
+    driver: bridge
+
+services:
+
+  postgresql:
+    container_name: contrib-postgresql
+    hostname: contrib-postgresql
+    networks:
+      - contrib-network
+    image: postgres:14-alpine
+    mem_limit: 512m
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - PostgresDataVolume:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: contrib
+
+  contribution-management-be:
+    container_name: contribution-management-be
+    hostname: contribution-management-be
+    networks:
+      - contrib-network
+    image: contribution-management:latest
+    mem_limit: 1024m
+    depends_on:
+      - postgresql
+    ports:
+      - 8081:8081
+
+volumes:
+  PostgresDataVolume:
+    external: false
