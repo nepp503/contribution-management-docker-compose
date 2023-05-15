@@ -33,6 +33,15 @@ services:
     ports:
       - 8081:8081
 
+  contribution-management-fe:
+    container_name: contribution-management-fe
+    hostname: contribution-management-fe
+    networks:
+      - contrib-network
+    image: contribution-management-fe:latest
+    ports:
+      - 8080:8080
+
 volumes:
   PostgresDataVolume:
     external: false
